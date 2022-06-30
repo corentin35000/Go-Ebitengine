@@ -1,26 +1,38 @@
 package main
 
 import (
+	_ "github.com/codecat/go-enet"
+	"github.com/corentin35000/Go-Ebitengine/src/sceneManager"
 	"github.com/hajimehoshi/ebiten/v2"
-	"image/color"
+	_ "github.com/hajimehoshi/ebiten/v2/text"
+	_ "golang.org/x/image/font"
+	_ "golang.org/x/image/font/opentype"
 	"log"
 )
 
 type Game struct{}
 
-var img *ebiten.Image
+const (
+	SCREEN_WIDTH  = 640
+	SCREEN_HEIGHT = 480
+)
+
+var fpsCurrent float64 = ebiten.CurrentFPS()
 
 func init() {
-	img = ebiten.NewImage(10, 10)
-	img.Fill(color.RGBA{0xff, 0, 0, 0xff})
+	ebiten.SetFullscreen(true)
+	ebiten.SetWindowTitle("By Corentin")
+
+	//sceneManager.Init(SCREENWIDTH, SCREENHEIGTH)
 }
 
 func (g *Game) Update() error {
+	sceneManager.Update()
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	screen.DrawImage(img, nil)
+	sceneManager.Draw()
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
@@ -28,8 +40,6 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 }
 
 func main() {
-	ebiten.SetWindowSize(1280, 780)
-	ebiten.SetWindowTitle("By Corentin")
 	if err := ebiten.RunGame(&Game{}); err != nil {
 		log.Fatal(err)
 	}
